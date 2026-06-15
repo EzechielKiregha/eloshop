@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { ShoppingBag, User, LogOut, Menu, X, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore } from "@/stores/cart-store";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
   { label: "Boutique", href: "/shop" },
@@ -22,8 +24,9 @@ export function PublicHeader() {
     <header className="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur-lg dark:bg-zinc-950/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Elo&apos;Shop
+        <Link href="/" className="shrink-0">
+          <Image src="/logo-light.png" alt="KAMEGA Shop" width={130} height={40} className="h-9 w-auto dark:hidden" priority />
+          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={130} height={40} className="hidden h-9 w-auto dark:block" priority />
         </Link>
 
         {/* Desktop nav */}
@@ -37,6 +40,7 @@ export function PublicHeader() {
 
         {/* Right actions */}
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link href="/cart">
               <ShoppingBag className="h-5 w-5" />

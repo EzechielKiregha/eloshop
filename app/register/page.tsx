@@ -82,8 +82,12 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Créer un compte</CardTitle>
-          <CardDescription>Rejoignez Elo&apos;Shop</CardDescription>
+          <div className="mx-auto mb-2 h-16 w-16">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="KAMEGA Shop" className="h-full w-full object-contain" />
+          </div>
+          <CardTitle className="text-2xl font-bold">Creer un compte</CardTitle>
+          <CardDescription>Rejoignez KAMEGA Shop</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">

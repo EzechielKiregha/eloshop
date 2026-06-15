@@ -1,3 +1,5 @@
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import { put } from "@vercel/blob";
 
 type ReceiptLine = {
@@ -11,31 +13,139 @@ type ReceiptInput = {
   title: string;
   customerName?: string | null;
   paymentMethod?: string;
+  discount?: number;
+  subtotal?: string | number;
   total: string | number;
   items: ReceiptLine[];
 };
 
-export async function createReceipt(input: ReceiptInput) {
-  const lines = [
-    "Elo'Shop",
-    input.title,
-    `Numéro: ${input.number}`,
-    `Date: ${new Date().toLocaleDateString("fr-FR")}`,
-    input.customerName ? `Client: ${input.customerName}` : null,
-    input.paymentMethod ? `Paiement: ${input.paymentMethod}` : null,
-    "",
-    ...input.items.map((item) => `${item.name} x${item.quantity} - ${item.price}`),
-    "",
-    `Total: ${input.total}`
-  ].filter(Boolean).join("\n");
+export async function createReceipt(input: ReceiptInput): Promise<string> {
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const PAGE_WIDTH = doc.internal.pageSize.getWidth();
+  const MARGIN = 20;
+  let y = MARGIN;
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return `data:text/plain;charset=utf-8,${encodeURIComponent(lines)}`;
+  // ─── Header ──────────────────────────────────────────────────
+  doc.setFontSize(22);
+  doc.setFont("helvetica", "bold");
+  doc.text("KAMEGA Shop", PAGE_WIDTH / 2, y, { align: "center" });
+  y += 8;
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Plateforme moderne pour boutique & gestion commerciale", PAGE_WIDTH / 2, y, { align: "center" });
+  y += 12;
+
+  // Divider
+  doc.setDrawColor(220, 220, 220);
+  doc.line(MARGIN, y, PAGE_WIDTH - MARGIN, y);
+  y += 8;
+
+  // ─── Receipt info ────────────────────────────────────────────
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text(input.title, PAGE_WIDTH / 2, y, { align: "center" });
+  y += 10;
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+
+  const infoRows: [string, string][] = [
+    ["Numero", input.number],
+    ["Date", new Date().toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })],
+  ];
+  if (input.customerName) infoRows.push(["Client", input.customerName]);
+  if (input.paymentMethod) infoRows.push(["Paiement", input.paymentMethod]);
+
+  for (const [label, value] of infoRows) {
+    doc.setFont("helvetica", "bold");
+    doc.text(label + " :", MARGIN, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(value, MARGIN + 35, y);
+    y += 6;
+  }
+  y += 6;
+
+  // ─── Items table ─────────────────────────────────────────────
+  autoTable(doc, {
+    startY: y,
+    margin: { left: MARGIN, right: MARGIN },
+    head: [["Produit", "Qte", "Prix unit.", "Total"]],
+    body: input.items.map((item) => {
+      const unitPrice = typeof item.price === "number" ? item.price : parseFloat(String(item.price).replace(/[^\d.,]/g, "").replace(",", ".")) || 0;
+      const lineTotal = unitPrice * item.quantity;
+      return [
+        item.name,
+        String(item.quantity),
+        typeof item.price === "string" ? item.price : `${item.price.toFixed(2)} USD`,
+        `${lineTotal.toFixed(2)} USD`,
+      ];
+    }),
+    headStyles: {
+      fillColor: [24, 24, 27],
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+      fontSize: 9,
+    },
+    styles: { fontSize: 9, cellPadding: 4 },
+    alternateRowStyles: { fillColor: [250, 250, 250] },
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  y = (doc as any).lastAutoTable.finalY + 10;
+
+  // ─── Summary ─────────────────────────────────────────────────
+  doc.setDrawColor(220, 220, 220);
+  doc.line(MARGIN, y, PAGE_WIDTH - MARGIN, y);
+  y += 8;
+
+  const summaryX = PAGE_WIDTH - MARGIN;
+
+  if (input.subtotal) {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text(`Sous-total : ${input.subtotal}`, summaryX, y, { align: "right" });
+    y += 6;
   }
 
-  const blob = await put(`receipts/${input.number}.txt`, lines, {
+  if (input.discount && input.discount > 0) {
+    doc.setTextColor(220, 38, 38);
+    doc.text(`Remise : -${input.discount.toFixed(2)} USD`, summaryX, y, { align: "right" });
+    doc.setTextColor(0, 0, 0);
+    y += 6;
+  }
+
+  doc.setFontSize(13);
+  doc.setFont("helvetica", "bold");
+  doc.text(`Total : ${input.total}`, summaryX, y, { align: "right" });
+  y += 16;
+
+  // ─── Footer ──────────────────────────────────────────────────
+  doc.setDrawColor(220, 220, 220);
+  doc.line(MARGIN, y, PAGE_WIDTH - MARGIN, y);
+  y += 8;
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Merci pour votre achat !", PAGE_WIDTH / 2, y, { align: "center" });
+  y += 6;
+  doc.setFontSize(8);
+  doc.setTextColor(120, 120, 120);
+  doc.text("KAMEGA Shop - Votre boutique en ligne", PAGE_WIDTH / 2, y, { align: "center" });
+
+  // ─── Generate PDF buffer ─────────────────────────────────────
+  const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
+
+  // If no blob token, return a data URL
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    const base64 = pdfBuffer.toString("base64");
+    return `data:application/pdf;base64,${base64}`;
+  }
+
+  // Upload to Vercel Blob
+  const blob = await put(`receipts/${input.number}.pdf`, pdfBuffer, {
     access: "public",
-    contentType: "text/plain;charset=utf-8"
+    contentType: "application/pdf",
   });
 
   return blob.url;

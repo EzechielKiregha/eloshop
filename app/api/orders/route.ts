@@ -1,8 +1,11 @@
+import { render } from "@react-email/render";
 import { fail, ok, paginated } from "@/lib/api-response";
 import { money, nextBusinessNumber } from "@/lib/numbers";
 import { prisma } from "@/lib/prisma";
 import { createReceipt } from "@/lib/receipt";
+import { sendEmail } from "@/lib/send-email";
 import { checkoutSchema } from "@/lib/validators";
+import { OrderConfirmationEmail } from "@/emails/OrderConfirmationEmail";
 import { hash } from "bcryptjs";
 
 export async function GET(request: Request) {
@@ -130,6 +133,27 @@ export async function POST(request: Request) {
     });
 
     const updated = await prisma.order.update({ where: { id: order.id }, data: { receiptUrl } });
+
+    // Fire-and-forget order confirmation email
+    if (order.customer.email) {
+      render(
+        OrderConfirmationEmail({
+          customerName: order.customer.name,
+          orderNumber: order.orderNumber,
+          total: money(order.total),
+          items: order.items.map((item) => ({
+            name: item.product.name,
+            quantity: item.quantity,
+            price: money(item.price),
+          })),
+        }),
+      )
+        .then((html) =>
+          sendEmail(order.customer.email!, `Commande ${order.orderNumber} confirmee`, html),
+        )
+        .catch((err) => console.error("[EMAIL] Order confirmation error:", err));
+    }
+
     return ok(updated, { status: 201 });
   } catch (error) {
     return fail(error);

@@ -18,6 +18,6 @@ export const useUiStore = create<UiState>()(
       setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
       setCompactTables: (compactTables) => set({ compactTables })
     }),
-    { name: "eloshop-ui" }
+    { name: "kamegashop-ui" }
   )
 );

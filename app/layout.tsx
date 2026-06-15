@@ -7,8 +7,12 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Elo'Shop",
-  description: "Plateforme moderne pour boutique, caisse et gestion commerciale.",
+  title: "KAMEGA Shop",
+  description: "KAMEGA Shop - Vetements, chaussures et accessoires premium.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

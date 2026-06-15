@@ -1,8 +1,11 @@
 import { NextRequest } from "next/server";
 import { hash } from "bcryptjs";
+import { render } from "@react-email/render";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { ok, fail } from "@/lib/api-response";
+import { sendEmail } from "@/lib/send-email";
+import { WelcomeEmail } from "@/emails/WelcomeEmail";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -42,6 +45,13 @@ export async function POST(req: NextRequest) {
       },
       select: { id: true, name: true, phone: true, email: true, role: true },
     });
+
+    // Fire-and-forget welcome email
+    if (data.email) {
+      render(WelcomeEmail({ userName: data.name }))
+        .then((html) => sendEmail(data.email!, "Bienvenue chez KAMEGA Shop", html))
+        .catch((err) => console.error("[EMAIL] Welcome email error:", err));
+    }
 
     return ok(user, { status: 201 });
   } catch (error) {

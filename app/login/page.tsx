@@ -53,8 +53,12 @@ function LoginContent() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Elo&apos;Shop</CardTitle>
-          <CardDescription>Connectez-vous à votre compte</CardDescription>
+          <div className="mx-auto mb-2 h-16 w-16">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="KAMEGA Shop" className="h-full w-full object-contain" />
+          </div>
+          <CardTitle className="text-2xl font-bold">KAMEGA Shop</CardTitle>
+          <CardDescription>Connectez-vous a votre compte</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">

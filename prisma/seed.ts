@@ -63,9 +63,9 @@ async function main() {
     where: { phone: "+200000000000" },
     update: { password: adminPassword },
     create: {
-      name: "Administrateur Elo'Shop",
+      name: "Administrateur KAMEGA Shop",
       phone: "+200000000000",
-      email: "admin@eloshop.test",
+      email: "admin@kamegashop.com",
       password: adminPassword,
       role: "ADMIN"
     }

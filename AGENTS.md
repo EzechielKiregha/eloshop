@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-Elo'Shop is a Next.js 15 (App Router) e-commerce + POS platform with PostgreSQL via Prisma 7 Accelerate. French-facing UI.
+KAMEGA Shop is a Next.js 15 (App Router) e-commerce + POS platform with PostgreSQL via Prisma 7 Accelerate. French-facing UI.
 
 **Three app areas:**
 - **Public Shop** (`/`, `/shop`, `/cart`, `/checkout`) — landing page, product catalog with filters, cart (Zustand persist), guest checkout
@@ -31,7 +31,7 @@ npm run db:push      # Push schema to database (prisma db push)
 npm run db:seed      # Seed database (npx tsx prisma/seed.ts)
 ```
 
-Admin login after seed: phone `+200000000000` or email `admin@eloshop.test`, password `admin123`.
+Admin login after seed: phone `+200000000000` or email `admin@kamegashop.com`, password `admin123`.
 
 ## Coding Style & Naming Conventions
 

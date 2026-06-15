@@ -48,6 +48,6 @@ export const useCartStore = create<CartState>()(
         })),
       clearCart: () => set({ items: [] })
     }),
-    { name: "eloshop-cart" }
+    { name: "kamegashop-cart" }
   )
 );

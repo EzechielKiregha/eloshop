@@ -1,11 +1,16 @@
 import { fail, ok } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
+import { OrderStatus } from "@/generated/prisma/enums";
 
 export async function GET() {
   try {
-    const [SaleRevenueAgg, OrderRevenueAgg, orders, customers, products, salesTrend, recentOrders] = await Promise.all([
-      prisma.sale.aggregate({ _sum: { total: true } }),
-      prisma.order.aggregate({ where: { status: { notIn: ["CANCELLED", "PENDING"] as const } }, _sum: { total: true } }),
+    const saleAgg = await prisma.sale.aggregate({ _sum: { total: true } });
+    const orderAgg = await prisma.order.aggregate({
+      where: { status: { notIn: [OrderStatus.CANCELLED, OrderStatus.PENDING] } },
+      _sum: { total: true },
+    });
+
+    const [orders, customers, products, salesTrend, recentOrders] = await Promise.all([
       prisma.order.count(),
       prisma.user.count({ where: { role: "CUSTOMER" } }),
       prisma.product.count(),
@@ -20,7 +25,7 @@ export async function GET() {
     ]);
 
     return ok({
-      revenue: Number(SaleRevenueAgg._sum.total ?? 0) + Number(OrderRevenueAgg._sum?.total ?? 0),
+      revenue: Number((saleAgg._sum as { total?: unknown }).total ?? 0) + Number((orderAgg._sum as { total?: unknown }).total ?? 0),
       orders,
       customers,
       products,
