@@ -25,8 +25,8 @@ export function PublicHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <Image src="/logo-light.png" alt="KAMEGA Shop" width={130} height={40} className="h-9 w-auto dark:hidden" priority />
-          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={130} height={40} className="hidden h-9 w-auto dark:block" priority />
+          <Image src="/logo-light.png" alt="KAMEGA Shop" width={150} height={100} className="h-9 w-auto dark:hidden" priority />
+          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={150} height={100} className="hidden h-9 w-auto dark:block" priority />
         </Link>
 
         {/* Desktop nav */}
@@ -59,9 +59,11 @@ export function PublicHeader() {
                   <Link href="/admin"><LayoutDashboard className="mr-1 h-4 w-4" />Admin</Link>
                 </Button>
               )}
-              <Button variant="ghost" size="sm" asChild>
+              {session.user.role === "CUSTOMER" && (
+                <Button variant="ghost" size="sm" asChild>
                 <Link href="/customer"><User className="mr-1 h-4 w-4" />{session.user.name?.split(" ")[0]}</Link>
               </Button>
+              )}
               <Button variant="ghost" size="icon" onClick={() => signOut({ callbackUrl: "/" })}>
                 <LogOut className="h-4 w-4" />
               </Button>

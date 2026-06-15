@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShoppingBag, Store, Package, Truck } from "lucide-react";
+import { ArrowRight, ShoppingBag, Store, Package, Truck, Phone, Mail } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PublicHeader } from "@/components/public-header";
 import { ProductCard } from "@/components/product-card";
@@ -149,8 +149,8 @@ export default async function Home() {
               <Image
                 src="/logo-dark.png"
                 alt="KAMEGA Shop"
-                width={140}
-                height={45}
+                width={150}
+                height={100}
                 className="h-10 w-auto"
               />
               <p className="mt-4 max-w-xs text-sm leading-6 text-zinc-400">
@@ -186,13 +186,15 @@ export default async function Home() {
               <ul className="mt-4 space-y-3">
                 <li className="text-sm text-zinc-400">KAMEGA Shop</li>
                 <li className="text-sm text-zinc-400">Clothes &bull; Shoes &bull; Accessories</li>
+                <li className="text-sm text-zinc-400 flex flex-row gap-2"><Phone className="h-4 w-4"/>+255 683 880 107</li>
+                <li className="text-sm text-zinc-400 flex flex-row gap-2"><Mail className="h-4 w-4"/>factorymusav@gmail.com</li>
               </ul>
             </div>
           </div>
 
           <div className="mt-10 border-t border-zinc-800 pt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-zinc-500">&copy; {new Date().getFullYear()} KAMEGA Shop. Tous droits reserves.</p>
-            <p className="text-xs text-zinc-500">Propulse par Next.js</p>
+            <p className="text-xs text-zinc-500">Propulse par KIREGHA CORP</p>
           </div>
         </div>
       </footer>
