@@ -34,8 +34,8 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center gap-2 border-b px-4">
         <Link href="/" className="shrink-0">
-          <Image src="/logo-light.png" alt="KAMEGA Shop" width={110} height={36} className="h-8 w-auto dark:hidden" priority />
-          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={110} height={36} className="hidden h-8 w-auto dark:block" priority />
+          <Image src="/logo-light.png" alt="KAMEGA Shop" width={110} height={36} className="h-14 w-auto dark:hidden" priority />
+          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={110} height={36} className="hidden h-14 w-auto dark:block" priority />
         </Link>
         <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
           Admin

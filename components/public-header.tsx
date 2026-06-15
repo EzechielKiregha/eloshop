@@ -25,8 +25,8 @@ export function PublicHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <Image src="/logo-light.png" alt="KAMEGA Shop" width={150} height={100} className="h-9 w-auto dark:hidden" priority />
-          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={150} height={100} className="hidden h-9 w-auto dark:block" priority />
+          <Image src="/logo-light.png" alt="KAMEGA Shop" width={180} height={40} className="h-16 w-auto dark:hidden" priority />
+          <Image src="/logo-dark.png" alt="KAMEGA Shop" width={130} height={40} className="hidden h-16 w-auto dark:block" priority />
         </Link>
 
         {/* Desktop nav */}

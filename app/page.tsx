@@ -149,9 +149,9 @@ export default async function Home() {
               <Image
                 src="/logo-dark.png"
                 alt="KAMEGA Shop"
-                width={150}
-                height={100}
-                className="h-10 w-auto"
+                width={140}
+                height={45}
+                className="h-24 w-auto"
               />
               <p className="mt-4 max-w-xs text-sm leading-6 text-zinc-400">
                 Vetements, chaussures et accessoires de qualite. Votre style, notre passion.
