@@ -1,0 +1,773 @@
+You are a Senior Full-Stack Engineer tasked with building a production-ready MVP called **Elo'Shop**.
+
+Elo'Shop is a modern retail platform that combines:
+
+1. E-Commerce Store
+2. Customer Portal
+3. Point Of Sale (POS)
+4. Inventory Management
+5. Order Management
+6. Receipt Management
+7. Customer Management
+8. Analytics Dashboard
+
+The business sells clothes and shoes.
+
+claude --resume 8a26de0a-c53f-44c9-9998-46d0c194341a
+
+---
+
+# TECH STACK
+
+Use ONLY the following stack:
+
+* Next.js 15 App Router
+* TypeScript
+* Tailwind CSS
+* Shadcn UI
+* Lucide React
+* Prisma ORM
+* PostgreSQL
+* TanStack React Query
+* Axios
+* Zustand
+* Zod
+* React Hook Form
+* Vercel Blob
+
+No Redux.
+
+No Context API for business state.
+
+Use Zustand and TanStack Query.
+
+---
+
+# UI DESIGN REQUIREMENTS
+
+Design language:
+
+* Modern
+* Minimalist
+* Black and White
+* Theme (light & dark mode)
+* Premium
+* Inspired by Vercel, Linear, Stripe and Apple
+
+Requirements:
+
+* Fully responsive
+* Mobile first
+* Tablet optimized
+* Desktop optimized
+
+Use:
+
+* rounded-2xl
+* subtle borders
+* clean spacing
+* consistent typography
+* hover states
+* loading states
+* skeleton loaders
+
+All pages must look production ready.
+
+---
+
+# APPLICATION STRUCTURE
+
+Create three application areas:
+
+```text
+/
+├── Shop
+├── Customer Portal
+└── Admin Panel
+```
+
+---
+
+# DATABASE MODELS
+
+Create Prisma models for:
+
+### User
+
+```text
+id
+name
+email
+phone
+password
+role
+createdAt
+updatedAt
+```
+
+Roles:
+
+```text
+ADMIN
+CUSTOMER
+```
+
+---
+
+### Category
+
+```text
+id
+name
+slug
+createdAt
+updatedAt
+```
+
+---
+
+### Product
+
+```text
+id
+name
+slug
+description
+price
+costPrice
+stock
+sku
+images[]
+categoryId
+createdAt
+updatedAt
+```
+
+---
+
+### Cart
+
+```text
+id
+customerId
+```
+
+---
+
+### Order
+
+```text
+id
+orderNumber
+customerId
+status
+subtotal
+total
+receiptUrl
+createdAt
+updatedAt
+```
+
+---
+
+### OrderItem
+
+```text
+id
+orderId
+productId
+quantity
+price
+```
+
+---
+
+### Sale
+
+POS sales.
+
+```text
+id
+saleNumber
+customerName
+subtotal
+discount
+total
+paymentMethod
+receiptUrl
+createdAt
+```
+
+---
+
+### SaleItem
+
+```text
+id
+saleId
+productId
+quantity
+price
+```
+
+---
+
+### InventoryMovement
+
+```text
+id
+productId
+type
+quantity
+createdAt
+```
+
+Types:
+
+```text
+IN
+OUT
+```
+
+---
+
+# SHOP MODULE
+
+Create public storefront.
+
+---
+
+## Landing Page
+
+Sections:
+
+* Hero
+* Featured Products
+* Categories
+* New Arrivals
+* Footer
+
+---
+
+## Shop Page
+
+Features:
+
+* Product grid
+* Search
+* Category filter
+* Price filter
+* Sort
+
+Sorting:
+
+```text
+Newest
+Price Low To High
+Price High To Low
+```
+
+Responsive:
+
+Desktop:
+
+```text
+Filters Sidebar + Product Grid
+```
+
+Mobile:
+
+```text
+Filter Sheet
+```
+
+---
+
+## Product Details Page
+
+Features:
+
+* Image gallery
+* Product details
+* Stock display
+* Add To Cart
+* Buy Now
+
+---
+
+# CART SYSTEM
+
+Use Zustand Persist.
+
+Requirements:
+
+* Add item
+* Remove item
+* Update quantity
+* Clear cart
+* Persist after refresh
+
+Cart should survive page reloads.
+
+---
+
+# CHECKOUT
+
+Guest checkout.
+
+Fields:
+
+```text
+Full Name
+Phone Number
+Address
+Email (optional)
+```
+
+When checkout succeeds:
+
+1. Create customer if not existing
+2. Create order
+3. Reduce inventory
+4. Generate receipt
+5. Upload receipt to Vercel Blob
+6. Save receipt URL
+
+---
+
+# CUSTOMER PORTAL
+
+Routes:
+
+```text
+/customer
+/customer/orders
+/customer/profile
+```
+
+Features:
+
+### Dashboard
+
+Show:
+
+* Total Orders
+* Total Spent
+
+---
+
+### Orders Page
+
+List all orders.
+
+---
+
+### Order Details
+
+Show:
+
+* Products
+* Quantities
+* Total
+* Status
+* Receipt Download
+
+---
+
+# ORDER STATUS SYSTEM
+
+Use:
+
+```text
+PENDING
+CONFIRMED
+PREPARING
+READY
+DELIVERED
+CANCELLED
+```
+
+---
+
+# ADMIN PANEL
+
+Routes:
+
+```text
+/admin
+/admin/pos
+/admin/products
+/admin/categories
+/admin/orders
+/admin/customers
+/admin/inventory
+```
+
+Use responsive sidebar.
+
+Desktop:
+
+Fixed sidebar.
+
+Mobile:
+
+Sheet sidebar.
+
+---
+
+# ADMIN DASHBOARD
+
+Cards:
+
+```text
+Revenue
+Orders
+Customers
+Products
+```
+
+Charts:
+
+* Sales Trend
+* Orders Trend
+
+Recent Activity feed.
+
+---
+
+# PRODUCT MANAGEMENT
+
+Create CRUD.
+
+Features:
+
+* Create product
+* Edit product
+* Delete product
+* Upload images
+* Category assignment
+
+Validation:
+
+Use Zod.
+
+Forms:
+
+Use React Hook Form.
+
+---
+
+# CATEGORY MANAGEMENT
+
+CRUD operations.
+
+---
+
+# CUSTOMER MANAGEMENT
+
+Admin can:
+
+* View customers
+* Search customers
+* View customer orders
+
+---
+
+# ORDER MANAGEMENT
+
+Admin can:
+
+* View all orders
+* Filter orders
+* Search orders
+* Change order status
+
+Status transitions:
+
+```text
+PENDING
+→ CONFIRMED
+→ PREPARING
+→ READY
+→ DELIVERED
+```
+
+Also allow:
+
+```text
+CANCELLED
+```
+
+---
+
+# POS MODULE
+
+This is the most important feature.
+
+Route:
+
+```text
+/admin/pos
+```
+
+Layout:
+
+Left:
+
+Product catalog.
+
+Right:
+
+Current sale.
+
+---
+
+## Product Catalog
+
+Features:
+
+* Search
+* Category filter
+* Product cards
+* Stock indicators
+
+---
+
+## Current Sale
+
+Features:
+
+* Add products
+* Quantity controls
+* Remove items
+* Discount
+* Tax
+* Totals
+
+---
+
+## Payment Methods
+
+```text
+CASH
+MOBILE_MONEY
+CARD
+BANK_TRANSFER
+```
+
+---
+
+## Complete Sale
+
+When clicked:
+
+1. Create sale
+2. Create sale items
+3. Reduce inventory
+4. Create inventory movements
+5. Generate receipt
+6. Upload receipt to Vercel Blob
+7. Save receipt URL
+
+---
+
+# INVENTORY MODULE
+
+Features:
+
+### Inventory List
+
+Show:
+
+* Product
+* Stock
+* SKU
+
+---
+
+### Low Stock Page
+
+Display products below threshold.
+
+---
+
+### Inventory Movements
+
+Display:
+
+```text
+Product
+Type
+Quantity
+Date
+```
+
+---
+
+# RECEIPT SYSTEM
+
+Generate PDF receipts.
+
+For:
+
+* Orders
+* POS Sales
+
+Receipt contains:
+
+```text
+Store Name
+Receipt Number
+Date
+Items
+Quantities
+Totals
+Payment Method
+```
+
+Upload PDFs to Vercel Blob.
+
+Store URL in database.
+
+Allow download.
+
+---
+
+# API ARCHITECTURE
+
+Use App Router Route Handlers.
+
+Structure:
+
+```text
+/api/products
+/api/categories
+/api/orders
+/api/customers
+/api/sales
+/api/inventory
+/api/dashboard
+```
+
+---
+
+# DATA FETCHING
+
+Use:
+
+TanStack Query.
+
+Create:
+
+```text
+hooks/
+services/
+```
+
+Pattern.
+
+Example:
+
+```text
+services/products.ts
+hooks/useProducts.ts
+```
+
+---
+
+# STATE MANAGEMENT
+
+Use Zustand for:
+
+* Cart
+* POS cart
+* UI preferences
+
+Use TanStack Query for server data.
+
+---
+
+# VALIDATION
+
+Use Zod everywhere.
+
+Validate:
+
+* Forms
+* API payloads
+* Query parameters
+
+---
+
+# UX REQUIREMENTS
+
+Implement:
+
+* Loading skeletons
+* Empty states
+* Error states
+* Toast notifications
+* Confirmation dialogs
+
+Use Shadcn components.
+
+---
+
+# RESPONSIVENESS
+
+Must work perfectly on:
+
+* Mobile
+* Tablet
+* Desktop
+
+Use:
+
+```tsx
+grid-cols-1
+sm:grid-cols-2
+lg:grid-cols-3
+xl:grid-cols-4
+```
+
+where appropriate.
+
+---
+
+# IMPORTANT BUSINESS RULE
+
+Inventory is shared between:
+
+1. Online Shop Orders
+2. POS Sales
+
+Whenever a product is sold from either system:
+
+```text
+stock = stock - quantity
+```
+
+This must be synchronized automatically.
+
+---
+
+# DELIVERABLE
+
+Generate:
+
+1. Prisma schema
+2. API routes
+3. Services
+4. Hooks
+5. Zustand stores
+6. Shadcn UI pages
+7. Dashboard
+8. POS module
+9. Inventory module
+10. Order module
+11. Customer module
+12. Receipt generation system
+13. Responsive layouts
+14. Type-safe architecture
+
+Follow enterprise-level folder organization and clean architecture principles. Build the entire application as a production-ready MVP suitable for deployment on Vercel.

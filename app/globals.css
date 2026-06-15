@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-zinc-200 dark:border-zinc-800;
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  ::selection {
+    @apply bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900;
+  }
+}

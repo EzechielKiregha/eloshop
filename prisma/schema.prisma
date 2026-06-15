@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  MOBILE_MONEY
+  CARD
+  BANK_TRANSFER
+}
+
+enum InventoryMovementType {
+  IN
+  OUT
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?  @unique
+  phone     String   @unique
+  password  String?
+  role      Role     @default(CUSTOMER)
+  orders    Order[]
+  cart      Cart?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id                 String              @id @default(cuid())
+  name               String
+  slug               String              @unique
+  description        String
+  price              Decimal             @db.Decimal(10, 2)
+  costPrice          Decimal             @db.Decimal(10, 2)
+  stock              Int                 @default(0)
+  sku                String              @unique
+  images             String[]
+  categoryId         String
+  category           Category            @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  orderItems         OrderItem[]
+  saleItems          SaleItem[]
+  inventoryMovements InventoryMovement[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model Cart {
+  id         String @id @default(cuid())
+  customerId String @unique
+  customer   User   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id          String       @id @default(cuid())
+  orderNumber String       @unique
+  customerId  String
+  customer    User         @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  status      OrderStatus  @default(PENDING)
+  subtotal    Decimal      @db.Decimal(10, 2)
+  total       Decimal      @db.Decimal(10, 2)
+  receiptUrl  String?
+  items       OrderItem[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model Sale {
+  id            String        @id @default(cuid())
+  saleNumber    String        @unique
+  customerName  String?
+  subtotal      Decimal       @db.Decimal(10, 2)
+  discount      Decimal       @default(0) @db.Decimal(10, 2)
+  total         Decimal       @db.Decimal(10, 2)
+  paymentMethod PaymentMethod
+  receiptUrl    String?
+  items         SaleItem[]
+  createdAt     DateTime      @default(now())
+}
+
+model SaleItem {
+  id        String  @id @default(cuid())
+  saleId    String
+  productId String
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model InventoryMovement {
+  id        String                @id @default(cuid())
+  productId String
+  product   Product               @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      InventoryMovementType
+  quantity  Int
+  createdAt DateTime              @default(now())
+}
