@@ -20,3 +20,8 @@ export async function completeSale(data: SalePayload) {
   const res = await http.post<ApiEnvelope<Sale>>("/sales", data);
   return res.data.data;
 }
+
+export async function generateReceipt(saleId: string) {
+  const res = await http.post<ApiEnvelope<Sale>>(`/sales/${saleId}/receipt`);
+  return res.data.data;
+}

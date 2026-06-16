@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/shop/${product.slug}`}>
-      <Card className="group overflow-hidden transition-shadow hover:shadow-soft">
+      <Card className="group overflow-hidden transition-all hover:shadow-gold hover:border-gold-400/30">
         <div className="relative aspect-square bg-zinc-100 dark:bg-zinc-800">
           {product.images[0] ? (
             <Image
@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <ShoppingBag className="h-12 w-12 text-zinc-300 dark:text-zinc-600" />
+              <ShoppingBag className="h-12 w-12 text-gold-400/40" />
             </div>
           )}
           {outOfStock && (
@@ -55,12 +55,12 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
         <CardContent className="p-4">
-          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs font-medium uppercase tracking-wider text-gold-500 dark:text-gold-400">
             {product.category?.name}
           </p>
           <h3 className="mt-1 font-semibold leading-tight">{product.name}</h3>
           <div className="mt-2 flex items-center justify-between">
-            <p className="text-lg font-bold">{money(product.price)}</p>
+            <p className="text-lg font-bold text-gold-600 dark:text-gold-400">{money(product.price)}</p>
             <Button
               size="sm"
               variant="outline"

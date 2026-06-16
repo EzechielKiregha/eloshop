@@ -32,7 +32,7 @@ export async function sendEmail(
 
   try {
     await transport.sendMail({
-      from: process.env.EMAIL_FROM || `"KAMEGA Shop" <noreply@kamegashop.com>`,
+      from: process.env.EMAIL_FROM || `"BOUTIQUE KAMEGA" <noreply@kamegashop.com>`,
       to,
       subject,
       html,

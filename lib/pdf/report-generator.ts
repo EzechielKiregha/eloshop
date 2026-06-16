@@ -24,7 +24,7 @@ export async function generateReportPdf(
   // ─── Header ──────────────────────────────────────────────────
   doc.setFontSize(20);
   doc.setFont("helvetica", "bold");
-  doc.text("KAMEGA Shop", PAGE_WIDTH / 2, yPos, { align: "center" });
+  doc.text("BOUTIQUE KAMEGA", PAGE_WIDTH / 2, yPos, { align: "center" });
   yPos += 10;
 
   doc.setFontSize(14);
@@ -110,7 +110,7 @@ export async function generateReportPdf(
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(120, 120, 120);
-    doc.text("KAMEGA Shop - Rapport de revenus", MARGIN, PAGE_HEIGHT - 15);
+    doc.text("BOUTIQUE KAMEGA - Rapport de revenus", MARGIN, PAGE_HEIGHT - 15);
     doc.text(`Page ${i} / ${pageCount}`, PAGE_WIDTH / 2, PAGE_HEIGHT - 15, { align: "center" });
     doc.text(
       `Genere le ${new Date().toLocaleDateString("fr-FR")}`,

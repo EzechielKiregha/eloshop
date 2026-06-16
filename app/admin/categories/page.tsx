@@ -36,9 +36,9 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     if (editing) {
-      form.reset({ name: editing.name, slug: editing.slug });
+      form.reset({ name: editing.name, slug: editing.slug, image: editing.image ?? "" });
     } else {
-      form.reset({ name: "", slug: "" });
+      form.reset({ name: "", slug: "", image: "" });
     }
   }, [editing, form]);
 
@@ -173,6 +173,12 @@ export default function CategoriesPage() {
               <Label htmlFor="cat-slug">Slug</Label>
               <Input id="cat-slug" {...form.register("slug")} />
               {form.formState.errors.slug && <p className="text-xs text-red-500">{form.formState.errors.slug.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="cat-image">Image URL (optionnel)</Label>
+              <Input id="cat-image" placeholder="https://example.com/image.jpg" {...form.register("image")} />
+              {form.formState.errors.image && <p className="text-xs text-red-500">{form.formState.errors.image.message}</p>}
             </div>
 
             <DialogFooter>

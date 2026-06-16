@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, ShoppingCart, Users, Package, Download } from "lucide-react";
+import { DollarSign, ShoppingCart, Users, Package, Download, FileText } from "lucide-react";
 
 const STATUS_MAP: Record<
   OrderStatus,
@@ -139,9 +139,9 @@ export default function AdminDashboardPage() {
               <div className="flex h-56 items-end gap-3">
                 {salesByDay.map((day, i) => (
                   <div key={i} className="flex flex-1 flex-col items-center gap-2">
-                    <div className="relative w-full rounded-lg bg-zinc-100 dark:bg-zinc-800" style={{ height: "100%" }}>
+                    <div className="relative w-full rounded-lg bg-gold-100/50 dark:bg-gold-950/20" style={{ height: "100%" }}>
                       <div
-                        className="absolute bottom-0 w-full rounded-lg bg-zinc-900 transition-all dark:bg-zinc-50"
+                        className="absolute bottom-0 w-full rounded-lg bg-gold-400 transition-all dark:bg-gold-400"
                         style={{ height: `${(day.amount / maxSaleAmount) * 100}%`, minHeight: "4px" }}
                       />
                     </div>
@@ -171,9 +171,9 @@ export default function AdminDashboardPage() {
                       <span>{label}</span>
                       <span className="text-zinc-500">{count} ({pct}%)</span>
                     </div>
-                    <div className="mt-2 h-3 rounded-full bg-zinc-100 dark:bg-zinc-800">
+                    <div className="mt-2 h-3 rounded-full bg-gold-100/50 dark:bg-gold-950/20">
                       <div
-                        className="h-3 rounded-full bg-zinc-900 transition-all dark:bg-zinc-50"
+                        className="h-3 rounded-full bg-gold-400 transition-all"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -241,12 +241,13 @@ export default function AdminDashboardPage() {
                   <th className="pb-3 font-medium">Client</th>
                   <th className="pb-3 font-medium">Total</th>
                   <th className="pb-3 font-medium">Paiement</th>
+                  <th className="pb-3 font-medium text-right">Reçu</th>
                 </tr>
               </thead>
               <tbody>
                 {(!recentSales || recentSales.length === 0) && (
                   <tr>
-                    <td colSpan={4} className="py-6 text-center text-zinc-400">
+                    <td colSpan={5} className="py-6 text-center text-zinc-400">
                       Aucune vente recente
                     </td>
                   </tr>
@@ -258,6 +259,22 @@ export default function AdminDashboardPage() {
                     <td className="py-3">{money(sale.total)}</td>
                     <td className="py-3">
                       <Badge variant="secondary">{sale.paymentMethod}</Badge>
+                    </td>
+                    <td className="py-3 text-right">
+                      {sale.receiptUrl ? (
+                        <a
+                          href={sale.receiptUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-zinc-400">
+                          <FileText className="h-3.5 w-3.5" />
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     // Fire-and-forget welcome email
     if (data.email) {
       render(WelcomeEmail({ userName: data.name }))
-        .then((html) => sendEmail(data.email!, "Bienvenue chez KAMEGA Shop", html))
+        .then((html) => sendEmail(data.email!, "Bienvenue chez BOUTIQUE KAMEGA", html))
         .catch((err) => console.error("[EMAIL] Welcome email error:", err));
     }
 

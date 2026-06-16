@@ -14,7 +14,8 @@ export const productSchema = z.object({
 
 export const categorySchema = z.object({
   name: z.string().min(2),
-  slug: z.string().min(2)
+  slug: z.string().min(2),
+  image: z.string().url().optional().or(z.literal("")),
 });
 
 export const checkoutSchema = z.object({

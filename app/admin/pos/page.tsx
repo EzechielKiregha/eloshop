@@ -8,6 +8,9 @@ import {
   ShoppingCart,
   Search,
   Package,
+  Download,
+  FileText,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +39,7 @@ import { usePosStore } from "@/stores/pos-store";
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
 import { useSales } from "@/hooks/useSales";
-import type { PaymentMethod } from "@/lib/types";
+import type { PaymentMethod, Sale } from "@/lib/types";
 
 // ─── Payment method labels ──────────────────────────────────────────
 const PAYMENT_METHODS: { value: PaymentMethod; label: string }[] = [
@@ -70,7 +73,8 @@ export default function PosPage() {
   });
   const { data: categoriesData, isLoading: categoriesLoading } =
     useCategories();
-  const { completeSale } = useSales();
+  const { data: salesData, completeSale, generateReceipt } = useSales({ pageSize: 3 });
+  const recentSales: Sale[] = salesData?.data ?? [];
 
   const products = productsData?.data ?? [];
   const categories: Array<{ id: string; name: string; slug: string }> =
@@ -291,6 +295,55 @@ export default function PosPage() {
           </div>
         </>
       )}
+
+      {/* Recent Sales */}
+      {recentSales.length > 0 && (
+        <div className="mt-6 border-t pt-4">
+          <h3 className="text-sm font-semibold text-zinc-500 mb-3">Dernières ventes</h3>
+          <div className="space-y-2">
+            {recentSales.map((sale) => (
+              <div key={sale.id} className="flex items-center justify-between gap-2 rounded-lg border p-2.5 text-xs">
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium truncate">{sale.saleNumber}</p>
+                  <p className="text-zinc-400">
+                    {new Date(sale.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                  </p>
+                </div>
+                <span className="font-semibold shrink-0">{money(sale.total)}</span>
+                {sale.receiptUrl ? (
+                  <a
+                    href={sale.receiptUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[10px] font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    <Download className="size-3" />
+                    Reçu
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => {
+                      generateReceipt.mutate(sale.id, {
+                        onSuccess: () => toast({ title: "Reçu généré" }),
+                        onError: () => toast({ title: "Erreur", variant: "destructive" }),
+                      });
+                    }}
+                    disabled={generateReceipt.isPending}
+                    className="shrink-0 inline-flex items-center gap-1 rounded-md border border-gold-400/50 px-2 py-1 text-[10px] font-medium text-gold-600 hover:bg-gold-50 dark:text-gold-400 dark:hover:bg-gold-950/20 transition-colors"
+                  >
+                    {generateReceipt.isPending ? (
+                      <Loader2 className="size-3 animate-spin" />
+                    ) : (
+                      <FileText className="size-3" />
+                    )}
+                    Générer
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 
@@ -304,7 +357,7 @@ export default function PosPage() {
         {/* ── Left: Product Catalog ──────────────────────────────── */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Header */}
-          <div className="border-b bg-white px-4 py-4 dark:bg-zinc-950 sm:px-6">
+          <div className="border-b border-gold-400/15 bg-white px-4 py-4 dark:bg-zinc-950 sm:px-6">
             <div className="flex items-center gap-3">
               <h1 className="text-xl font-bold tracking-tight">Caisse</h1>
               <Badge variant="outline" className="hidden sm:inline-flex">
@@ -381,8 +434,8 @@ export default function PosPage() {
                         className={`relative cursor-pointer select-none p-4 transition-all ${
                           outOfStock
                             ? "cursor-not-allowed opacity-50"
-                            : "hover:border-zinc-400 hover:shadow-md active:scale-[0.98]"
-                        } ${inCart ? "ring-2 ring-zinc-900 dark:ring-zinc-50" : ""}`}
+                            : "hover:border-gold-400/40 hover:shadow-gold active:scale-[0.98]"
+                        } ${inCart ? "ring-2 ring-gold-400" : ""}`}
                         onClick={() => {
                           if (outOfStock) return;
                           addItem({
@@ -432,7 +485,7 @@ export default function PosPage() {
         </div>
 
         {/* ── Right: Cart (desktop) ────────────────────────────── */}
-        <aside className="hidden w-[400px] shrink-0 border-l bg-white p-5 dark:bg-zinc-950 lg:flex lg:flex-col">
+        <aside className="hidden w-[400px] shrink-0 border-l border-gold-400/15 bg-white p-5 dark:bg-zinc-950 lg:flex lg:flex-col">
           {cartContent}
         </aside>
       </div>

@@ -4,11 +4,11 @@
 
 @layer base {
   * {
-    @apply border-zinc-200 dark:border-zinc-800;
+    @apply border-gold-400/15 dark:border-gold-400/15;
     box-sizing: border-box;
   }
   body {
-    @apply bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50;
+    @apply bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 font-display;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   a {
@@ -16,6 +16,15 @@
     text-decoration: none;
   }
   ::selection {
-    @apply bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900;
+    @apply bg-gold-400/30 text-zinc-900 dark:bg-gold-400/50 dark:text-zinc-50;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    @apply bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500 bg-clip-text text-transparent;
   }
 }

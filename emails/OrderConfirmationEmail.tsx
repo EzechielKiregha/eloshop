@@ -32,7 +32,7 @@ export const OrderConfirmationEmail = ({
   <Html>
     <Head />
     <Preview>
-      Commande {orderNumber} confirmee - KAMEGA Shop
+      Commande {orderNumber} confirmee - BOUTIQUE KAMEGA
     </Preview>
     <Body
       style={{
@@ -69,7 +69,7 @@ export const OrderConfirmationEmail = ({
               letterSpacing: "-0.5px",
             }}
           >
-            KAMEGA Shop
+            BOUTIQUE KAMEGA
           </Text>
           <Text style={{ fontSize: "13px", margin: 0, opacity: 0.7 }}>
             Confirmation de commande
@@ -177,7 +177,7 @@ export const OrderConfirmationEmail = ({
           }}
         >
           <Text style={{ margin: 0 }}>
-            Merci de faire confiance a KAMEGA Shop.
+            Merci de faire confiance a BOUTIQUE KAMEGA.
           </Text>
           <Text style={{ margin: "8px 0 0" }}>
             Cet email a ete envoye automatiquement. Merci de ne pas y repondre.

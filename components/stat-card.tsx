@@ -18,8 +18,8 @@ export function StatCard({ title, value, icon: Icon, description }: StatCardProp
             <p className="mt-1 text-2xl font-bold tracking-tight">{value}</p>
             {description && <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{description}</p>}
           </div>
-          <div className="rounded-2xl bg-zinc-100 p-3 dark:bg-zinc-800">
-            <Icon className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+          <div className="rounded-2xl bg-gold-400/10 p-3 dark:bg-gold-400/10">
+            <Icon className="h-5 w-5 text-gold-500 dark:text-gold-400" />
           </div>
         </div>
       </CardContent>

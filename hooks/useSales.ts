@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getSales,
   completeSale,
+  generateReceipt,
   type SalePayload,
 } from "@/services/sales";
 
@@ -27,8 +28,17 @@ export function useSales(params?: SalesParams) {
     },
   });
 
+  const generateReceiptMutation = useMutation({
+    mutationFn: (saleId: string) => generateReceipt(saleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
+
   return {
     ...salesQuery,
     completeSale: completeSaleMutation,
+    generateReceipt: generateReceiptMutation,
   };
 }

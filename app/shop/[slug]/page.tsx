@@ -25,7 +25,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <PublicHeader />
       <section className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:px-8">
         {/* Image */}
-        <div className="relative aspect-square overflow-hidden rounded-2xl border bg-zinc-100 shadow-sm dark:bg-zinc-800">
+        <div className="relative aspect-square overflow-hidden rounded-2xl border border-gold-400/15 bg-zinc-100 shadow-gold dark:bg-zinc-800">
           {product.images[0] ? (
             <Image
               src={product.images[0]}
@@ -37,20 +37,20 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <ShoppingBag className="h-24 w-24 text-zinc-300 dark:text-zinc-600" />
+              <ShoppingBag className="h-24 w-24 text-gold-400/30" />
             </div>
           )}
         </div>
 
         {/* Details */}
         <div className="flex flex-col justify-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm font-semibold uppercase tracking-widest text-gold-500 dark:text-gold-400">
             {product.category.name}
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
             {product.name}
           </h1>
-          <p className="mt-5 text-3xl font-bold">{money(price)}</p>
+          <p className="mt-5 text-3xl font-bold text-gold-600 dark:text-gold-400">{money(price)}</p>
           <p className="mt-5 max-w-xl leading-7 text-zinc-600 dark:text-zinc-400">
             {product.description}
           </p>

@@ -84,10 +84,10 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <div className="mx-auto mb-2 h-16 w-16">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="KAMEGA Shop" className="h-full w-full object-contain" />
+            <img src="/new-logo.png" alt="BOUTIQUE KAMEGA" className="h-full w-full rounded-full border border-gold-400/30 object-contain" />
           </div>
-          <CardTitle className="text-2xl font-bold">Creer un compte</CardTitle>
-          <CardDescription>Rejoignez KAMEGA Shop</CardDescription>
+          <CardTitle className="text-2xl font-bold text-gold-gradient">Créer un compte</CardTitle>
+          <CardDescription>Rejoignez BOUTIQUE KAMEGA</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">

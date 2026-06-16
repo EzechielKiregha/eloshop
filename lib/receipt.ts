@@ -28,17 +28,20 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
   // ─── Header ──────────────────────────────────────────────────
   doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
-  doc.text("KAMEGA Shop", PAGE_WIDTH / 2, y, { align: "center" });
+  doc.setTextColor(212, 175, 55);
+  doc.text("BOUTIQUE KAMEGA", PAGE_WIDTH / 2, y, { align: "center" });
   y += 8;
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("Plateforme moderne pour boutique & gestion commerciale", PAGE_WIDTH / 2, y, { align: "center" });
+  doc.setTextColor(100, 100, 100);
+  doc.text("Habillement Mixte — Style • Élégance • Qualité", PAGE_WIDTH / 2, y, { align: "center" });
   y += 12;
 
-  // Divider
-  doc.setDrawColor(220, 220, 220);
+  // Gold divider
+  doc.setDrawColor(212, 175, 55);
   doc.line(MARGIN, y, PAGE_WIDTH - MARGIN, y);
+  doc.setTextColor(0, 0, 0);
   y += 8;
 
   // ─── Receipt info ────────────────────────────────────────────
@@ -82,8 +85,8 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
       ];
     }),
     headStyles: {
-      fillColor: [24, 24, 27],
-      textColor: [255, 255, 255],
+      fillColor: [30, 30, 30],
+      textColor: [212, 175, 55],
       fontStyle: "bold",
       fontSize: 9,
     },
@@ -131,7 +134,17 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
   y += 6;
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
-  doc.text("KAMEGA Shop - Votre boutique en ligne", PAGE_WIDTH / 2, y, { align: "center" });
+  doc.text("BOUTIQUE KAMEGA — Habillement Mixte", PAGE_WIDTH / 2, y, { align: "center" });
+  y += 5;
+  doc.text("Butembo, Nord-Kivu, RDC  |  +243 978 638 104", PAGE_WIDTH / 2, y, { align: "center" });
+  y += 8;
+  doc.setDrawColor(212, 175, 55);
+  doc.line(MARGIN + 20, y, PAGE_WIDTH - MARGIN - 20, y);
+  y += 6;
+  doc.setFontSize(7);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(100, 100, 100);
+  doc.text("Les marchandises achetées ne sont ni remises ni échangées", PAGE_WIDTH / 2, y, { align: "center" });
 
   // ─── Generate PDF buffer ─────────────────────────────────────
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));

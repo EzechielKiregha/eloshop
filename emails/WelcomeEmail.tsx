@@ -17,7 +17,7 @@ interface WelcomeEmailProps {
 export const WelcomeEmail = ({ userName }: WelcomeEmailProps) => (
   <Html>
     <Head />
-    <Preview>Bienvenue chez KAMEGA Shop - Votre compte a ete cree</Preview>
+    <Preview>Bienvenue chez BOUTIQUE KAMEGA - Votre compte a ete cree</Preview>
     <Body
       style={{
         fontFamily: "Arial, Helvetica, sans-serif",
@@ -53,7 +53,7 @@ export const WelcomeEmail = ({ userName }: WelcomeEmailProps) => (
               letterSpacing: "-0.5px",
             }}
           >
-            KAMEGA Shop
+            BOUTIQUE KAMEGA
           </Text>
           <Text style={{ fontSize: "13px", margin: 0, opacity: 0.7 }}>
             Votre boutique en ligne
@@ -81,7 +81,7 @@ export const WelcomeEmail = ({ userName }: WelcomeEmailProps) => (
               margin: "0 0 16px",
             }}
           >
-            Votre compte KAMEGA Shop a bien ete cree. Vous pouvez maintenant :
+            Votre compte BOUTIQUE KAMEGA a bien ete cree. Vous pouvez maintenant :
           </Text>
 
           <Text
@@ -115,7 +115,7 @@ export const WelcomeEmail = ({ userName }: WelcomeEmailProps) => (
           }}
         >
           <Text style={{ margin: 0 }}>
-            Merci de faire confiance a KAMEGA Shop.
+            Merci de faire confiance a BOUTIQUE KAMEGA.
           </Text>
           <Text style={{ margin: "8px 0 0" }}>
             Cet email a ete envoye automatiquement. Merci de ne pas y repondre.
