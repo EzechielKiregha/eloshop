@@ -10,11 +10,21 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { EmptyState } from "@/components/empty-state";
 import { toast } from "@/hooks/use-toast";
-import { Search, ShoppingCart, Download, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Search,
+  ShoppingCart,
+  Download,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   { value: "PENDING", label: "En attente" },
@@ -25,7 +35,13 @@ const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   { value: "CANCELLED", label: "Annulée" },
 ];
 
-const STATUS_BADGE: Record<OrderStatus, { variant: "secondary" | "default" | "warning" | "success" | "destructive"; label: string }> = {
+const STATUS_BADGE: Record<
+  OrderStatus,
+  {
+    variant: "secondary" | "default" | "warning" | "success" | "destructive";
+    label: string;
+  }
+> = {
   PENDING: { variant: "secondary", label: "En attente" },
   CONFIRMED: { variant: "default", label: "Confirmée" },
   PREPARING: { variant: "warning", label: "En préparation" },
@@ -55,7 +71,11 @@ export default function OrdersPage() {
       await updateOrderStatus.mutateAsync({ id: orderId, status });
       toast({ title: "Statut mis à jour" });
     } catch {
-      toast({ title: "Erreur", description: "Impossible de mettre à jour le statut.", variant: "destructive" });
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour le statut.",
+        variant: "destructive",
+      });
     }
   }
 
@@ -63,7 +83,9 @@ export default function OrdersPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Commandes</h1>
-        <p className="text-sm text-zinc-500">Recherchez, filtrez et mettez à jour les statuts des commandes.</p>
+        <p className="text-sm text-zinc-500">
+          Recherchez, filtrez et mettez à jour les statuts des commandes.
+        </p>
       </div>
 
       {/* Toolbar */}
@@ -73,13 +95,19 @@ export default function OrdersPage() {
           <Input
             placeholder="Rechercher une commande..."
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             className="pl-9"
           />
         </div>
         <Select
           value={statusFilter}
-          onValueChange={(val) => { setStatusFilter(val as OrderStatus | "ALL"); setPage(1); }}
+          onValueChange={(val) => {
+            setStatusFilter(val as OrderStatus | "ALL");
+            setPage(1);
+          }}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Tous les statuts" />
@@ -87,7 +115,9 @@ export default function OrdersPage() {
           <SelectContent>
             <SelectItem value="ALL">Tous les statuts</SelectItem>
             {STATUS_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -106,7 +136,11 @@ export default function OrdersPage() {
         <EmptyState
           icon={ShoppingCart}
           title="Aucune commande"
-          description={search || statusFilter !== "ALL" ? "Aucune commande ne correspond à vos critères." : "Les commandes apparaîtront ici."}
+          description={
+            search || statusFilter !== "ALL"
+              ? "Aucune commande ne correspond à vos critères."
+              : "Les commandes apparaîtront ici."
+          }
         />
       ) : (
         <Card className="rounded-2xl border p-0">
@@ -127,20 +161,28 @@ export default function OrdersPage() {
                   const badge = STATUS_BADGE[order.status];
                   return (
                     <tr key={order.id} className="border-b last:border-0">
-                      <td className="px-5 py-3 font-medium">{order.orderNumber}</td>
-                      <td className="px-5 py-3">{order.customer?.name ?? "—"}</td>
+                      <td className="px-5 py-3 font-medium">
+                        {order.orderNumber}
+                      </td>
+                      <td className="px-5 py-3">
+                        {order.customer?.name ?? "—"}
+                      </td>
                       <td className="px-5 py-3">{money(order.total)}</td>
                       <td className="px-5 py-3">
                         <Select
                           value={order.status}
-                          onValueChange={(val) => handleStatusChange(order.id, val as OrderStatus)}
+                          onValueChange={(val) =>
+                            handleStatusChange(order.id, val as OrderStatus)
+                          }
                         >
                           <SelectTrigger className="h-8 w-[160px]">
                             <Badge variant={badge.variant}>{badge.label}</Badge>
                           </SelectTrigger>
                           <SelectContent>
                             {STATUS_OPTIONS.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -152,7 +194,11 @@ export default function OrdersPage() {
                         <div className="flex justify-end gap-1">
                           {order.receiptUrl && (
                             <Button variant="ghost" size="icon" asChild>
-                              <a href={order.receiptUrl} target="_blank" rel="noopener noreferrer">
+                              <a
+                                href={order.receiptUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 <Download className="h-4 w-4" />
                               </a>
                             </Button>

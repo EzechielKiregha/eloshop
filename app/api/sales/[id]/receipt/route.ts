@@ -14,7 +14,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
 
     if (!sale) return notFound("Vente introuvable");
 
-    if (sale.receiptUrl) {
+    if (sale.receiptUrl && sale.receiptUrl.startsWith('http')) {
       return ok({ receiptUrl: sale.receiptUrl });
     }
 
@@ -41,6 +41,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
 
     return ok(updated, { status: 201 });
   } catch (error) {
+    console.error(error)
     return fail(error, 500);
   }
 }

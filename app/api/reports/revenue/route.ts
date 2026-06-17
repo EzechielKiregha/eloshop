@@ -89,7 +89,7 @@ export async function GET(request: Request) {
     });
 
     const formatMoney = (v: number) =>
-      v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD";
+      v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " $";
 
     // ─── PDF export ────────────────────────────────────────────
     if (pdf) {

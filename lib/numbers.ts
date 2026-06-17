@@ -3,7 +3,7 @@ export function money(value: unknown): string {
   return new Intl.NumberFormat("fr-FR", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(num) + " USD";
+  }).format(num) + " $";
 }
 
 export function moneyRaw(value: unknown): string {

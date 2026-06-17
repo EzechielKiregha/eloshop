@@ -80,8 +80,8 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
       return [
         item.name,
         String(item.quantity),
-        typeof item.price === "string" ? item.price : `${item.price.toFixed(2)} USD`,
-        `${lineTotal.toFixed(2)} USD`,
+        typeof item.price === "string" ? item.price : `${item.price.toFixed(2)} $`,
+        `${lineTotal.toFixed(2)} $`,
       ];
     }),
     headStyles: {
@@ -113,7 +113,7 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
 
   if (input.discount && input.discount > 0) {
     doc.setTextColor(220, 38, 38);
-    doc.text(`Remise : -${input.discount.toFixed(2)} USD`, summaryX, y, { align: "right" });
+    doc.text(`Remise : -${input.discount.toFixed(2)} $`, summaryX, y, { align: "right" });
     doc.setTextColor(0, 0, 0);
     y += 6;
   }
@@ -148,16 +148,20 @@ export async function createReceipt(input: ReceiptInput): Promise<string> {
 
   // ─── Generate PDF buffer ─────────────────────────────────────
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
+  const blobToken = `${process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN}`;
+  const blobStoreId = `${process.env.NEXT_PUBLIC_BLOB_STORE_ID}`;
 
   // If no blob token, return a data URL
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  if (!blobToken) {
     const base64 = pdfBuffer.toString("base64");
     return `data:application/pdf;base64,${base64}`;
   }
 
   // Upload to Vercel Blob
-  const blob = await put(`receipts/${input.number}.pdf`, pdfBuffer, {
+  const blob = await put(`kamega/receipts/${input.number}.pdf`, pdfBuffer, {
     access: "public",
+    token: blobToken,
+    storeId: blobStoreId,
     contentType: "application/pdf",
   });
 

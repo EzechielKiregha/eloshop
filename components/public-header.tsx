@@ -78,7 +78,12 @@ export function PublicHeader() {
           {session ? (
             <div className="hidden items-center gap-2 md:flex">
               {session.user.role === "ADMIN" && (
-                <Button variant="ghost" size="sm" asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="dark:hover:text-gold-500"
+                  asChild
+                >
                   <Link href="/admin">
                     <LayoutDashboard className="mr-1 h-4 w-4 text-gold-500" />
                     Admin
@@ -86,7 +91,12 @@ export function PublicHeader() {
                 </Button>
               )}
               {session.user.role === "CUSTOMER" && (
-                <Button variant="ghost" size="sm" asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="dark:hover:text-gold-500"
+                  asChild
+                >
                   <Link href="/customer" className="dark:hover:text-gold-500">
                     <User className="mr-1 h-4 w-4 text-gold-500 dark:hover:text-gold-500" />
                     {session.user.name?.split(" ")[0]}
@@ -97,8 +107,9 @@ export function PublicHeader() {
                 variant="ghost"
                 size="icon"
                 onClick={() => signOut({ callbackUrl: "/" })}
+                className="flex text-gold-500 dark:hover:text-gold-500"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-4 w-4 dark:hover:text-gold-500" />
               </Button>
             </div>
           ) : (
@@ -158,8 +169,9 @@ export function PublicHeader() {
                         signOut({ callbackUrl: "/" });
                         setOpen(false);
                       }}
+                      className="flex text-gold-500 dark:hover:text-gold-500"
                     >
-                      <LogOut className="mr-2 h-4 w-4" />
+                      <LogOut className="mr-2 h-4 w-4 dark:hover:text-gold-500" />
                       Se déconnecter
                     </Button>
                   </>

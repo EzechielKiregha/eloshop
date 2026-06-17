@@ -146,18 +146,25 @@ export default function ProductsPage() {
   async function onSubmit(values: ProductFormValues) {
     try {
       setIsUploading(true);
-      const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-      const blobStoreId = process.env.NEXT_PUBLIC_BLOB_STORE_ID;
+      const blobToken = `${process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN}`;
+      const blobStoreId = `${process.env.NEXT_PUBLIC_BLOB_STORE_ID}`;
+
+      console.log({ blobStoreId, blobToken });
 
       const uploadedUrls = await Promise.all(
         imageFiles.map(async (f) => {
           if (typeof f === "string") return f;
-          if (!blobToken) throw new Error("BLOB_READ_WRITE_TOKEN is missing.");
-          const blob = await put(`products/images/${Date.now()}-${f.name}`, f, {
-            access: "public",
-            token: blobToken,
-            storeId: blobStoreId,
-          });
+          if (!blobToken)
+            throw new Error("NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN is missing.");
+          const blob = await put(
+            `kamega/products/images/${Date.now()}-${f.name}`,
+            f,
+            {
+              access: "public",
+              token: blobToken,
+              storeId: blobStoreId,
+            },
+          );
           return blob.url;
         }),
       );
@@ -367,7 +374,7 @@ export default function ProductsPage() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="costPrice">Prix coûtant</Label>
+                <Label htmlFor="costPrice">Prix [+10 unites]</Label>
                 <Input
                   id="costPrice"
                   type="number"

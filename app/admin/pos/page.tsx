@@ -73,7 +73,11 @@ export default function PosPage() {
   });
   const { data: categoriesData, isLoading: categoriesLoading } =
     useCategories();
-  const { data: salesData, completeSale, generateReceipt } = useSales({ pageSize: 3 });
+  const {
+    data: salesData,
+    completeSale,
+    generateReceipt,
+  } = useSales({ pageSize: 3 });
   const recentSales: Sale[] = salesData?.data ?? [];
 
   const products = productsData?.data ?? [];
@@ -217,7 +221,7 @@ export default function PosPage() {
             {/* Discount */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-zinc-500">
-                Remise (USD)
+                Remise ($)
               </label>
               <Input
                 type="number"
@@ -299,18 +303,30 @@ export default function PosPage() {
       {/* Recent Sales */}
       {recentSales.length > 0 && (
         <div className="mt-6 border-t pt-4">
-          <h3 className="text-sm font-semibold text-zinc-500 mb-3">Dernières ventes</h3>
+          <h3 className="text-sm font-semibold text-zinc-500 mb-3">
+            Dernières ventes
+          </h3>
           <div className="space-y-2">
             {recentSales.map((sale) => (
-              <div key={sale.id} className="flex items-center justify-between gap-2 rounded-lg border p-2.5 text-xs">
+              <div
+                key={sale.id}
+                className="flex items-center justify-between gap-2 rounded-lg border p-2.5 text-xs"
+              >
                 <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{sale.saleNumber}</p>
                   <p className="text-zinc-400">
-                    {new Date(sale.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                    {new Date(sale.createdAt).toLocaleDateString("fr-FR", {
+                      day: "2-digit",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </div>
-                <span className="font-semibold shrink-0">{money(sale.total)}</span>
-                {sale.receiptUrl ? (
+                <span className="font-semibold shrink-0">
+                  {money(sale.total)}
+                </span>
+                {sale.receiptUrl && sale.receiptUrl.startsWith("http") ? (
                   <a
                     href={sale.receiptUrl}
                     target="_blank"
@@ -325,7 +341,8 @@ export default function PosPage() {
                     onClick={() => {
                       generateReceipt.mutate(sale.id, {
                         onSuccess: () => toast({ title: "Reçu généré" }),
-                        onError: () => toast({ title: "Erreur", variant: "destructive" }),
+                        onError: () =>
+                          toast({ title: "Erreur", variant: "destructive" }),
                       });
                     }}
                     disabled={generateReceipt.isPending}

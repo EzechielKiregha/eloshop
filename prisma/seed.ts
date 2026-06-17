@@ -48,7 +48,7 @@ const products = [
     description: "Sac structuré pour accompagner les tenues professionnelles et habillées.",
     price: 195,
     costPrice: 98,
-    images: ['https://i.pinimg.com/1200x/e6/8e/ea/e68eea48087ef90893ebd51fbb79e7ed.jpg', 'https://i.pinimg.com/1200x/01/USD/74/01fc74ecb865ac132baa9adb374f6659.jpg'],
+    images: ['https://i.pinimg.com/1200x/e6/8e/ea/e68eea48087ef90893ebd51fbb79e7ed.jpg', 'https://i.pinimg.com/1200x/01/$/74/01fc74ecb865ac132baa9adb374f6659.jpg'],
     stock: 23,
     sku: "ACC-031",
     categorySlug: "accessoires"

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag } from "lucide-react";
+import { AlertCircle, MessageCircle, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +28,11 @@ export function ProductCard({ product }: ProductCardProps) {
       price: Number(product.price),
       image: product.images[0],
     });
-    toast({ title: "Ajouté au panier", description: product.name, variant: "default" });
+    toast({
+      title: "Ajouté au panier",
+      description: product.name,
+      variant: "default",
+    });
   };
 
   return (
@@ -60,7 +64,9 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
           <h3 className="mt-1 font-semibold leading-tight">{product.name}</h3>
           <div className="mt-2 flex items-center justify-between">
-            <p className="text-lg font-bold text-gold-600 dark:text-gold-400">{money(product.price)}</p>
+            <p className="text-lg font-bold text-gold-600 dark:text-gold-400">
+              {money(product.price)}
+            </p>
             <Button
               size="sm"
               variant="outline"
@@ -72,6 +78,14 @@ export function ProductCard({ product }: ProductCardProps) {
               Ajouter
             </Button>
           </div>
+          <p className="mt-1 text-center text-xs text-zinc-500">
+            <AlertCircle className="inline h-3.5 w-3.5 mr-1" />
+            Une commande de 10 items et le prix de {""}
+            <span className="text-sm font-medium text-gold-600 dark:text-gold-400">
+              {money(product.costPrice)}
+            </span>
+            {""} sera appliquer sur chaque produit
+          </p>
         </CardContent>
       </Card>
     </Link>
