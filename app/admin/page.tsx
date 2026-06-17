@@ -45,10 +45,12 @@ export default function AdminDashboardPage() {
 
   // Report export dates
   const today = new Date().toISOString().split("T")[0];
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000)
+
+  const oneWeekAgo = new Date(Date.now() - 7 * 86400000)
     .toISOString()
     .split("T")[0];
-  const [reportFrom, setReportFrom] = useState(thirtyDaysAgo);
+
+  const [reportFrom, setReportFrom] = useState(oneWeekAgo);
   const [reportTo, setReportTo] = useState(today);
 
   if (isLoading) {
