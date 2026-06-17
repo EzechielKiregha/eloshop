@@ -15,11 +15,11 @@ export async function GET() {
       prisma.user.count({ where: { role: "CUSTOMER" } }),
       prisma.product.count(),
       prisma.sale.findMany({
-        select: { id: true, saleNumber: true, customerName: true, total: true, createdAt: true, paymentMethod: true },
+        select: { id: true, saleNumber: true, customerName: true, receiptUrl: true, total: true, createdAt: true, paymentMethod: true },
         orderBy: { createdAt: "asc" },
       }),
       prisma.order.findMany({
-        select: { id: true, orderNumber: true, customer: { select: { name: true } }, total: true, createdAt: true, status: true },
+        select: { id: true, orderNumber: true, receiptUrl: true, customer: { select: { name: true } }, total: true, createdAt: true, status: true },
         orderBy: { createdAt: "asc" },
       }),
     ]);

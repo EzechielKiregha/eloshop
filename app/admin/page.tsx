@@ -13,7 +13,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, ShoppingCart, Users, Package, Download, FileText } from "lucide-react";
+import {
+  DollarSign,
+  ShoppingCart,
+  Users,
+  Package,
+  Download,
+  FileText,
+} from "lucide-react";
 
 const STATUS_MAP: Record<
   OrderStatus,
@@ -38,7 +45,9 @@ export default function AdminDashboardPage() {
 
   // Report export dates
   const today = new Date().toISOString().split("T")[0];
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split("T")[0];
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000)
+    .toISOString()
+    .split("T")[0];
   const [reportFrom, setReportFrom] = useState(thirtyDaysAgo);
   const [reportTo, setReportTo] = useState(today);
 
@@ -80,7 +89,10 @@ export default function AdminDashboardPage() {
 
   // Sales chart data (last 7 sales)
   const salesByDay = recentSales.slice(-7).map((sale) => ({
-    date: new Date(sale.createdAt).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }),
+    date: new Date(sale.createdAt).toLocaleDateString("fr-FR", {
+      weekday: "short",
+      day: "numeric",
+    }),
     amount: Number(sale.total),
   }));
   const maxSaleAmount = Math.max(...salesByDay.map((s) => s.amount), 1);
@@ -134,18 +146,31 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             {salesByDay.length === 0 ? (
-              <p className="py-8 text-center text-sm text-zinc-500">Aucune vente recente</p>
+              <p className="py-8 text-center text-sm text-zinc-500">
+                Aucune vente recente
+              </p>
             ) : (
               <div className="flex h-56 items-end gap-3">
                 {salesByDay.map((day, i) => (
-                  <div key={i} className="flex flex-1 flex-col items-center gap-2">
-                    <div className="relative w-full rounded-lg bg-gold-100/50 dark:bg-gold-950/20" style={{ height: "100%" }}>
+                  <div
+                    key={i}
+                    className="flex flex-1 flex-col items-center gap-2"
+                  >
+                    <div
+                      className="relative w-full rounded-lg bg-gold-100/50 dark:bg-gold-950/20"
+                      style={{ height: "100%" }}
+                    >
                       <div
                         className="absolute bottom-0 w-full rounded-lg bg-gold-400 transition-all dark:bg-gold-400"
-                        style={{ height: `${(day.amount / maxSaleAmount) * 100}%`, minHeight: "4px" }}
+                        style={{
+                          height: `${(day.amount / maxSaleAmount) * 100}%`,
+                          minHeight: "4px",
+                        }}
                       />
                     </div>
-                    <span className="text-[10px] text-zinc-500">{day.date}</span>
+                    <span className="text-[10px] text-zinc-500">
+                      {day.date}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -160,16 +185,21 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {Object.entries(statusCounts).length === 0 ? (
-              <p className="py-8 text-center text-sm text-zinc-500">Aucune commande</p>
+              <p className="py-8 text-center text-sm text-zinc-500">
+                Aucune commande
+              </p>
             ) : (
               Object.entries(statusCounts).map(([status, count]) => {
                 const pct = Math.round((count / totalOrderCount) * 100);
-                const label = STATUS_MAP[status as OrderStatus]?.label ?? status;
+                const label =
+                  STATUS_MAP[status as OrderStatus]?.label ?? status;
                 return (
                   <div key={status}>
                     <div className="flex justify-between text-sm">
                       <span>{label}</span>
-                      <span className="text-zinc-500">{count} ({pct}%)</span>
+                      <span className="text-zinc-500">
+                        {count} ({pct}%)
+                      </span>
                     </div>
                     <div className="mt-2 h-3 rounded-full bg-gold-100/50 dark:bg-gold-950/20">
                       <div
@@ -210,19 +240,24 @@ export default function AdminDashboardPage() {
                     </td>
                   </tr>
                 )}
-                {recentOrders.slice(-5).reverse().map((order) => {
-                  const status = STATUS_MAP[order.status];
-                  return (
-                    <tr key={order.id} className="border-b last:border-0">
-                      <td className="py-3 font-medium">{order.orderNumber}</td>
-                      <td className="py-3">{order.customer?.name ?? "—"}</td>
-                      <td className="py-3">{money(order.total)}</td>
-                      <td className="py-3">
-                        <Badge variant={status.variant}>{status.label}</Badge>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {recentOrders
+                  .slice(-5)
+                  .reverse()
+                  .map((order) => {
+                    const status = STATUS_MAP[order.status];
+                    return (
+                      <tr key={order.id} className="border-b last:border-0">
+                        <td className="py-3 font-medium">
+                          {order.orderNumber}
+                        </td>
+                        <td className="py-3">{order.customer?.name ?? "—"}</td>
+                        <td className="py-3">{money(order.total)}</td>
+                        <td className="py-3">
+                          <Badge variant={status.variant}>{status.label}</Badge>
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -252,32 +287,36 @@ export default function AdminDashboardPage() {
                     </td>
                   </tr>
                 )}
-                {recentSales.slice(-5).reverse().map((sale) => (
-                  <tr key={sale.id} className="border-b last:border-0">
-                    <td className="py-3 font-medium">{sale.saleNumber}</td>
-                    <td className="py-3">{sale.customerName ?? "—"}</td>
-                    <td className="py-3">{money(sale.total)}</td>
-                    <td className="py-3">
-                      <Badge variant="secondary">{sale.paymentMethod}</Badge>
-                    </td>
-                    <td className="py-3 text-right">
-                      {sale.receiptUrl ? (
-                        <a
-                          href={sale.receiptUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
-                        >
-                          <Download className="h-3.5 w-3.5" />
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-xs text-zinc-400">
-                          <FileText className="h-3.5 w-3.5" />
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {recentSales
+                  .slice(-5)
+                  .reverse()
+                  .map((sale) => (
+                    <tr key={sale.id} className="border-b last:border-0">
+                      <td className="py-3 font-medium">{sale.saleNumber}</td>
+                      <td className="py-3">{sale.customerName ?? "—"}</td>
+                      <td className="py-3">{money(sale.total)}</td>
+                      <td className="py-3">
+                        <Badge variant="secondary">{sale.paymentMethod}</Badge>
+                      </td>
+                      <td className="py-3 text-right">
+                        {sale.receiptUrl &&
+                        sale.receiptUrl.startsWith("http") ? (
+                          <a
+                            href={sale.receiptUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                          </a>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-xs text-zinc-400">
+                            <FileText className="h-3.5 w-3.5" />
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

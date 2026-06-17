@@ -13,13 +13,15 @@ const electrolize = Electrolize({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
   title: "BOUTIQUE KAMEGA",
   description:
     "BOUTIQUE KAMEGA - Habillement Mixte. Style, Élégance, Qualité. Vetements, chaussures et accessoires premium à Butembo.",
-  icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
-  },
+  keywords: ["shop", "business"],
 };
 
 export default function RootLayout({

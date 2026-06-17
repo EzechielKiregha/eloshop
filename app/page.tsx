@@ -57,7 +57,7 @@ export default function Home() {
 
   // const products = use(getProducts());
   const { data: productsData, isLoading } = useProducts({
-    search: undefined,
+    pageSize: 4,
   });
   // const categories = use(getCategories());
   const { data: categories } = useCategories();
